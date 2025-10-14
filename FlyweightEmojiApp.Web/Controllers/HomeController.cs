@@ -10,7 +10,6 @@ using System.Linq;
 
 namespace FlyweightEmojiApp.Controllers
 {
-    // DTO simple solo para la sesión
     public class EmojiUsoDTO
     {
         public string Simbolo { get; set; }
