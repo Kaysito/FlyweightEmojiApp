@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Agregar Emoji";
+}
+
+<div class="container mt-4">
+    <h4>Agregar Nuevo Emoji</h4>
+    <form asp-action="AgregarEmoji" method="post">
+        <div class="mb-3">
+            <label class="form-label">Símbolo Emoji</label>
+            <input name="simbolo" class="form-control" placeholder="Ej: 😁" maxlength="2" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Posición X</label>
+            <input name="posicionX" type="number" class="form-control" value="0" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Posición Y</label>
+            <input name="posicionY" type="number" class="form-control" value="0" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Contexto</label>
+            <input name="contexto" class="form-control" placeholder="Chat, Notificación, etc." />
+        </div>
+        <button class="btn btn-success">Agregar Emoji</button>
+    </form>
+</div>
