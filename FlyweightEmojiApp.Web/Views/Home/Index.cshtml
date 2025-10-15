@@ -1,61 +1,98 @@
 ﻿@model FlyweightEmojiApp.Models.ReporteViewModel
 @{
-    ViewData["Title"] = "Demostración del Patrón Flyweight";
+    ViewData["Title"] = "Análisis del Patrón Flyweight";
+
+    // Lógica para las estadísticas
+    var totalUses = Model.UsosDeEmojis.Count();
+    var totalFlyweights = Model.TotalFlyweightsEnMemoria;
 }
 
 <style>
-    .stat-card {
-        border-left: 5px solid;
-        transition: transform 0.2s ease-in-out;
+    /* Paleta de Colores y Estilo Base */
+    :root {
+        --background-color: #f8f9fa;
+        --text-color: #212529;
+        --accent-color: #0056b3; /* Un azul más técnico */
+        --border-color: #dee2e6;
+        --card-background: #ffffff;
     }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
+    body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+    }
+
+    /* Estructura y Tarjetas */
+    .card {
+        background-color: var(--card-background);
+        border: 1px solid var(--border-color);
+        box-shadow: none; /* Diseño más plano */
+        border-radius: 0.375rem;
+    }
+
+    .card-header {
+        background-color: transparent;
+        border-bottom: 1px solid var(--border-color);
+        font-weight: 600; /* Semi-bold para títulos */
+        color: var(--text-color);
+    }
+
+    /* Componente de Estadísticas */
+    .stat-block {
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+        .stat-block .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            line-height: 1;
         }
 
-    .border-primary {
-        border-color: #0d6efd !important;
+        .stat-block .stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6c757d; /* Texto secundario */
+        }
+
+    /* Listas y Formularios */
+    .form-label {
+        font-weight: 500;
     }
 
-    .border-success {
-        border-color: #198754 !important;
-    }
-
-    .emoji-log-item {
-        font-size: 2.5rem;
-    }
-
-    .flyweight-cache-item {
-        font-size: 2rem;
-        padding: 0.5rem 1rem;
-        background-color: #e9ecef;
-        border-radius: 0.5rem;
+    .flyweight-symbol {
+        display: inline-block;
+        font-size: 1.5rem;
+        padding: 0.25rem 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.25rem;
+        background-color: var(--background-color);
     }
 </style>
 
 <div class="text-center pt-4 pb-5">
-    <h1 class="display-4 fw-bold">Patrón de Diseño Flyweight</h1>
+    <h1 class="display-5 fw-bold">Patrón Flyweight</h1>
     <p class="lead text-muted col-lg-8 mx-auto">
-        Observa cómo reutilizar objetos compartidos puede reducir drásticamente el consumo de memoria. Cada emoji único se crea una sola vez, sin importar cuántas veces lo uses.
+        Demostración interactiva sobre la optimización de memoria mediante Flyweight
     </p>
 </div>
 
-<div class="row mb-5">
-    <div class="col-md-6 mb-3">
-        <div class="card stat-card border-primary shadow-sm h-100">
-            <div class="card-body text-center">
-                <h6 class="card-subtitle mb-2 text-muted text-uppercase">Total de Usos Registrados</h6>
-                <p class="display-3 fw-bold text-primary">@Model.UsosDeEmojis.Count()</p>
-                <i class="bi bi-list-ol fs-1 text-primary opacity-25"></i>
+<div class="card mb-5">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                <div class="stat-block">
+                    <p class="stat-value">@totalUses</p>
+                    <h6 class="stat-label">Total de Instancias en Uso</h6>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="col-md-6 mb-3">
-        <div class="card stat-card border-success shadow-sm h-100">
-            <div class="card-body text-center">
-                <h6 class="card-subtitle mb-2 text-muted text-uppercase">Objetos Únicos en Memoria</h6>
-                <p class="display-3 fw-bold text-success">@Model.TotalFlyweightsEnMemoria</p>
-                <i class="bi bi-memory fs-1 text-success opacity-25"></i>
+            <div class="col-md-6 col-lg-6">
+                <div class="stat-block" style="border-left: 1px solid var(--border-color);">
+                    <p class="stat-value">@totalFlyweights</p>
+                    <h6 class="stat-label">Objetos Reales en Memoria</h6>
+                </div>
             </div>
         </div>
     </div>
@@ -63,78 +100,66 @@
 
 <div class="row g-4">
     <div class="col-lg-5">
-        <div class="card shadow-sm">
-            <div class="card-header d-flex align-items-center">
-                <i class="bi bi-plus-circle-fill me-2 fs-5"></i>
-                <h5 class="mb-0">Agregar Nuevo Uso de Emoji</h5>
-            </div>
+        <div class="card">
+            <div class="card-header">Panel de Control</div>
             <div class="card-body p-4">
                 <form asp-action="AgregarEmoji" method="post">
                     <div class="mb-3">
-                        <label class="form-label">Ingresa un emoji:</label>
-                        <input type="text" name="simbolo" class="form-control form-control-lg" placeholder="Ej: 😎, 👍, ❤️" maxlength="2" required />
+                        <label class="form-label">Símbolo</label>
+                        <input type="text" name="simbolo" class="form-control" placeholder="Ej: ★, ⚙, ❄" required />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Contexto de uso:</label>
-                        <input type="text" name="contexto" class="form-control" value="Mensaje" required />
+                        <label class="form-label">Contexto</label>
+                        <input type="text" name="contexto" class="form-control" value="Instancia" required />
                     </div>
                     <div class="row">
                         <div class="col">
-                            <label class="form-label">Posición X:</label>
+                            <label class="form-label">Posición X</label>
                             <input type="number" name="posicionX" class="form-control" value="@(new Random().Next(1, 100))" required />
                         </div>
                         <div class="col">
-                            <label class="form-label">Posición Y:</label>
+                            <label class="form-label">Posición Y</label>
                             <input type="number" name="posicionY" class="form-control" value="@(new Random().Next(1, 100))" required />
                         </div>
                     </div>
-                    <hr />
-                    <button type="submit" class="btn btn-primary w-100 btn-lg">
-                        <i class="bi bi-send-plus"></i> Agregar
-                    </button>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary">Agregar Instancia</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
     <div class="col-lg-7">
-        <div class="card shadow-sm mb-4">
-            <div class="card-header d-flex align-items-center">
-                <i class="bi bi-collection-fill me-2 fs-5"></i>
-                <h5 class="mb-0">Flyweights en Memoria (Caché)</h5>
-            </div>
-            <div class="card-body d-flex flex-wrap justify-content-center gap-3">
+        <div class="card mb-4">
+            <div class="card-header">Flyweights en Caché</div>
+            <div class="card-body d-flex flex-wrap gap-3">
                 @if (!Model.FlyweightsCacheados.Any())
                 {
-                    <p class="text-muted m-0">El caché está vacío.</p>
+                    <p class="text-muted small m-0">El caché de objetos está vacío.</p>
                 }
                 @foreach (var simbolo in Model.FlyweightsCacheados)
                 {
-                    <span class="flyweight-cache-item" title="Objeto compartido: @simbolo">@simbolo</span>
+                    <span class="flyweight-symbol">@simbolo</span>
                 }
             </div>
         </div>
 
-        <div class="card shadow-sm">
-            <div class="card-header d-flex align-items-center">
-                <i class="bi bi-card-list me-2 fs-5"></i>
-                <h5 class="mb-0">Registro Detallado de Usos</h5>
-            </div>
+        <div class="card">
+            <div class="card-header">Registro de Instancias</div>
             <div class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
                 @if (!Model.UsosDeEmojis.Any())
                 {
-                    <div class="list-group-item text-center text-muted p-4">
-                        Aún no se ha registrado ningún uso.
-                    </div>
+                    <div class="list-group-item text-center text-muted p-4">No hay instancias registradas.</div>
                 }
                 @foreach (var uso in Model.UsosDeEmojis.Reverse())
                 {
                     <div class="list-group-item d-flex align-items-center">
-                        <span class="emoji-log-item me-3">@uso.Emoji.Simbolo</span>
+                        <span class="fs-2 me-3">@uso.Emoji.Simbolo</span>
                         <div class="flex-grow-1">
                             <span class="fw-bold">@uso.Contexto</span>
                             <br>
-                            <small class="text-muted">Estado Extrínseco (único) &rarr; Posición: (@uso.PosicionX, @uso.PosicionY)</small>
+                            <small class="text-muted">Estado extrínseco: Posición (@uso.PosicionX, @uso.PosicionY)</small>
                         </div>
                     </div>
                 }
