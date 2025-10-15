@@ -5,6 +5,7 @@ using FlyweightPattern.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
+namespace FlyweightEmojiApp.Controllers
 {
     public class HomeController : Controller
     {
