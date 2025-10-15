@@ -1,29 +1,16 @@
 using FlyweightEmojiApp.Models;
+using FlyweightEmojiApp.Web.Models;
 using FlyweightPattern.Factories;
 using FlyweightPattern.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace FlyweightEmojiApp.Controllers
 {
-    // DTO simple solo para la sesión
-    public class EmojiUsoDTO
-    {
-        public string Simbolo { get; set; }
-        public int PosicionX { get; set; }
-        public int PosicionY { get; set; }
-        public string Contexto { get; set; }
-    }
-
     public class HomeController : Controller
     {
         private static readonly EmojiFactory _emojiFactory = new EmojiFactory();
 
-        // Helper para obtener la lista de emojis usados desde Session utilizando DTO
         private List<EmojiUso> ObtenerEmojisUsados()
         {
             var json = HttpContext.Session.GetString("EmojisUsados");
@@ -32,7 +19,6 @@ namespace FlyweightEmojiApp.Controllers
 
             var listaDto = JsonConvert.DeserializeObject<List<EmojiUsoDTO>>(json) ?? new List<EmojiUsoDTO>();
 
-            // Transforma DTO a EmojiUso real usando el factory
             return listaDto
                 .Select(x => new EmojiUso
                 {
@@ -43,7 +29,6 @@ namespace FlyweightEmojiApp.Controllers
                 }).ToList();
         }
 
-        // Helper para guardar la lista serializada en Session usando DTO
         private void GuardarEmojisUsados(List<EmojiUso> lista)
         {
             var listaDto = lista.Select(x => new EmojiUsoDTO
